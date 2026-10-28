@@ -163,7 +163,15 @@
 
   <!-- RUTINAS -->
   <section class="vista" id="v-rut">
-    <div class="fila espacio"><h2 class="script tit">Mis Rutinas</h2><span class="eti ac" id="rutHoy"></span></div>
+    <div class="fila espacio"><h2 class="script tit">Mis Rutinas</h2>
+      <div class="fila">
+        <button class="btn mini" id="rutAnt" aria-label="Día anterior">‹</button>
+        <input type="date" id="rutFecha" aria-label="Fecha de la rutina" min="2026-10-01" max="2027-12-31">
+        <button class="btn mini" id="rutSig" aria-label="Día siguiente">›</button>
+        <button class="btn mini" id="rutHoyBtn">Hoy</button>
+      </div>
+    </div>
+    <div class="eti ac" id="rutHoy"></div>
     <div class="grid g3" id="rutinas" style="margin-top:12px"></div>
   </section>
 
@@ -417,9 +425,16 @@
     if (v && !D.habitos.includes(v)) { D.habitos.push(v); guardar(); render(); } i.value = "";
   };
 
+  let rutDia = new Date(hoy);
+  const rutIr = d => { if (d >= new Date(2026, 9, 1) && d <= new Date(2027, 11, 31)) { rutDia = d; vRut(); } };
+  $("#rutAnt").onclick = () => rutIr(sumar(rutDia, -1));
+  $("#rutSig").onclick = () => rutIr(sumar(rutDia, 1));
+  $("#rutHoyBtn").onclick = () => rutIr(new Date(hoy));
+  $("#rutFecha").onchange = e => { if (e.target.value) rutIr(deIso(e.target.value)); };
   function vRut() {
-    const f = iso(hoy);
-    $("#rutHoy").textContent = `Hoy · ${DIAS[hoy.getDay()]} ${hoy.getDate()} ${ABR[hoy.getMonth()]}`;
+    const f = iso(rutDia);
+    $("#rutFecha").value = f;
+    $("#rutHoy").textContent = `${f === iso(hoy) ? "Hoy · " : ""}${DIAS[rutDia.getDay()]} ${rutDia.getDate()} de ${MESES[rutDia.getMonth()]} ${rutDia.getFullYear()}`;
     const checks = (D.rutChecks[f] ??= {});
     $("#rutinas").replaceChildren(...Object.entries(D.rutinas).map(([bloque, items]) => {
       const ul = el("ul", { class: "lista" }, ...items.map((it, i) => el("li", { class: checks[bloque + "|" + it] ? "hecho" : "" },
