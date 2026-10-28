@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agenda de Luisa Figueroa</title>
+<meta name="description" content="Kit de organización 2026–2027: calendario, semanas, hábitos, rutinas, presupuesto y limpieza.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tinta: #3f3f46; --gris: #71717a; --linea: #d4d4d8; --suave: #f1f1f3;
+    --acento: #c0485a; --acento-suave: #f6dfe3; --tab: #2f2f35; --papel: rgba(255,255,255,.86);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Montserrat, system-ui, sans-serif; color: var(--tinta);
+    background-color: #f4f4f5;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 15% 20%, rgba(200,200,206,.35), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 85% 60%, rgba(190,190,198,.30), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 40% 90%, rgba(205,205,210,.35), transparent 70%);
+    background-attachment: fixed; min-height: 100vh;
+  }
+  .script { font-family: "Great Vibes", cursive; font-weight: 400; }
+  header { padding: 20px 16px 8px; max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  header h1 { margin: 0; font-size: clamp(38px, 7vw, 60px); line-height: 1; }
+  header .sub { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--acento); font-weight: 600; margin-top: 4px; }
+  .mes-sel { display: flex; align-items: center; gap: 6px; }
+  .mes-sel select, .btn, input, textarea {
+    font: inherit; font-size: 13px; color: var(--tinta); border: 1px solid var(--linea); background: #fff; border-radius: 10px; padding: 7px 10px;
+  }
+  .btn { cursor: pointer; font-weight: 600; }
+  .btn.prim { background: var(--tinta); color: #fff; border-color: var(--tinta); }
+  .btn.acento { background: var(--acento); color: #fff; border-color: var(--acento); }
+  .btn.mini { padding: 3px 8px; font-size: 12px; border-radius: 8px; }
+  nav { position: sticky; top: 0; z-index: 5; background: var(--tab); }
+  nav .in { max-width: 1100px; margin: 0 auto; display: flex; gap: 4px; overflow-x: auto; padding: 8px 16px; scrollbar-width: none; }
+  nav button { flex: none; border: 0; border-radius: 999px; padding: 8px 14px; background: transparent; color: #e4e4e7; font: 600 13px Montserrat, sans-serif; cursor: pointer; }
+  nav button.on { background: var(--acento); color: #fff; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  .vista { display: none; } .vista.on { display: block; }
+  .tit { font-size: clamp(40px, 8vw, 64px); margin: 4px 0 0; line-height: 1.1; }
+  .eti { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--gris); }
+  .eti.ac { color: var(--acento); }
+  .card { background: var(--papel); border: 1px solid var(--linea); border-radius: 16px; padding: 16px; }
+  .grid { display: grid; gap: 12px; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .g3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .fila { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .espacio { justify-content: space-between; }
+  input[type=checkbox] { appearance: none; width: 20px; height: 20px; border: 1.5px solid #a1a1aa; border-radius: 5px; background: #fff; cursor: pointer; margin: 0; flex: none; padding: 0; display: inline-grid; place-content: center; }
+  input[type=checkbox]:checked { background: var(--acento); border-color: var(--acento); }
+  input[type=checkbox]:checked::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px,-1px); }
+  .barra { height: 10px; background: var(--suave); border-radius: 99px; overflow: hidden; }
+  .barra > i { display: block; height: 100%; background: var(--acento); border-radius: 99px; transition: width .3s; }
+  .big { font-size: 34px; font-weight: 700; }
+  /* calendario */
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal .cab { text-align: center; font-size: 10px; letter-spacing: .08em; font-weight: 600; color: var(--gris); padding: 4px 0; }
+  .dia { min-height: 92px; background: var(--papel); border: 1px solid var(--linea); border-radius: 10px; padding: 6px; cursor: pointer; overflow: hidden; }
+  .dia.vacio { background: rgba(255,255,255,.3); cursor: default; }
+  .dia.hoy { border-color: var(--acento); box-shadow: inset 0 0 0 1px var(--acento); }
+  .dia b { font-size: 13px; }
+  .ev { display: block; font-size: 10.5px; background: var(--acento-suave); color: #7f1d2d; border-radius: 5px; padding: 2px 4px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 640px) { .dia { min-height: 58px; padding: 4px; } .ev { font-size: 0; height: 6px; padding: 0; } .cal .cab { font-size: 0; } .cal .cab::first-letter { font-size: 11px; } }
+  /* tablas */
+  .tabla-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { padding: 5px 4px; text-align: center; font-size: 12px; }
+  th { font-size: 10px; color: var(--gris); font-weight: 600; }
+  td.nom, th.nom { text-align: left; white-space: nowrap; min-width: 140px; }
+  tr + tr td { border-top: 1px solid var(--suave); }
+  .habtabla td { padding: 4px 2px; }
+  .lista li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--suave); }
+  .lista { list-style: none; padding: 0; margin: 8px 0 0; }
+  .lista li span { flex: 1; font-size: 14px; }
+  .lista li.hecho span { text-decoration: line-through; color: var(--gris); }
+  .x { border: 0; background: none; color: #a1a1aa; cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; }
+  .x:hover { color: var(--acento); }
+  .agregar { display: flex; gap: 6px; margin-top: 10px; } .agregar input { flex: 1; min-width: 0; }
+  .sems { display: flex; gap: 6px; align-items: center; }
+  .sems button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--linea); background: #fff; font-weight: 700; cursor: pointer; }
+  .sems button.on { background: var(--tinta); color: #fff; border-color: var(--tinta); }
+  .dias7 { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+  .dias7 .card h3 { margin: 0; font-size: 30px; }
+  .money { font-variant-numeric: tabular-nums; }
+  .dlg { position: fixed; inset: 0; background: rgba(24,24,27,.45); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 20; }
+  .dlg.on { display: flex; }
+  .dlg .card { width: min(460px, 100%); background: #fff; max-height: 90vh; overflow: auto; }
+  .gcal { font-size: 12px; color: var(--acento); font-weight: 600; text-decoration: none; }
+  footer { text-align: center; font-size: 11px; color: var(--gris); padding: 24px 16px 40px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 class="script">Mi organización</h1>
+    <div class="sub">Agenda de Luisa Figueroa · 2026 – 2027</div>
+  </div>
+  <div class="mes-sel">
+    <button class="btn mini" id="mesAnt" aria-label="Mes anterior">‹</button>
+    <select id="mes" aria-label="Mes"></select>
+    <button class="btn mini" id="mesSig" aria-label="Mes siguiente">›</button>
+  </div>
+</header>
+<nav><div class="in" id="tabs"></div></nav>
+
+<main>
+  <!-- DASHBOARD -->
+  <section class="vista" id="v-dash">
+    <h2 class="script tit">Dashboard</h2>
+    <div class="eti ac" id="dashFecha"></div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><div class="eti">Hábitos esta semana</div><div class="big" id="dashHab">0%</div><div class="barra"><i id="dashHabBar" style="width:0"></i></div></div>
+      <div class="card"><div class="eti">Rutinas de hoy</div><div class="big" id="dashRut">0%</div><div class="barra"><i id="dashRutBar" style="width:0"></i></div></div>
+      <div class="card"><div class="eti">Balance del mes</div><div class="big money" id="dashBal">$0</div><div class="eti" id="dashBalSub"></div></div>
+    </div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="card">
+        <div class="eti">Hábito · progreso semanal</div>
+        <div class="tabla-scroll"><table id="dashTabla"></table></div>
+      </div>
+      <div class="card">
+        <div class="eti">Próximos eventos</div>
+        <ul class="lista" id="dashEventos"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDARIO -->
+  <section class="vista" id="v-cal">
+    <div class="fila espacio"><h2 class="script tit" id="calTit"></h2><span class="eti">Toca un día para agregar eventos</span></div>
+    <div class="cal" id="cal" style="margin-top:10px"></div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="card"><div class="eti">Prioridades del mes</div><ul class="lista" id="prio"></ul>
+        <form class="agregar" data-lista="prio"><input placeholder="Nueva prioridad"><button class="btn prim">+</button></form></div>
+      <div class="card"><div class="eti">Notas</div><textarea id="notasMes" rows="7" style="width:100%;margin-top:8px"></textarea></div>
+    </div>
+  </section>
+
+  <!-- SEMANAS -->
+  <section class="vista" id="v-sem">
+    <div class="fila espacio">
+      <div><h2 class="script tit" id="semTit">Semana</h2><div class="eti ac" id="semRango"></div></div>
+      <div class="sems"><span class="eti">Sem:</span><span id="semBtns" class="sems"></span></div>
+    </div>
+    <div class="dias7" id="dias7" style="margin-top:14px"></div>
+  </section>
+
+  <!-- HÁBITOS -->
+  <section class="vista" id="v-hab">
+    <h2 class="script tit">Chequeo de Hábitos</h2>
+    <div class="eti ac" id="habMes"></div>
+    <div class="card" style="margin-top:12px">
+      <div class="tabla-scroll"><table class="habtabla" id="habTabla"></table></div>
+      <form class="agregar" id="habAdd"><input placeholder="Nuevo hábito (ej. Meditar)"><button class="btn prim">Agregar hábito</button></form>
+    </div>
+    <div class="eti" style="margin:16px 0 8px">Progreso semanal</div>
+    <div class="grid g3" id="habSemanas"></div>
+  </section>
+
+  <!-- RUTINAS -->
+  <section class="vista" id="v-rut">
+    <div class="fila espacio"><h2 class="script tit">Mis Rutinas</h2><span class="eti ac" id="rutHoy"></span></div>
+    <div class="grid g3" id="rutinas" style="margin-top:12px"></div>
+  </section>
+
+  <!-- PRESUPUESTO -->
+  <section class="vista" id="v-pre">
+    <div class="fila espacio"><h2 class="script tit">Presupuesto mensual</h2><span class="eti ac" id="preMes"></span></div>
+    <div class="card fila" style="margin-top:12px">
+      <label class="eti">Balance inicial</label><input type="number" id="balIni" style="width:160px" inputmode="decimal">
+    </div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="card"><div class="eti">Entradas</div><div class="tabla-scroll"><table id="tEnt"></table></div>
+        <form class="agregar mov" data-tipo="ent"><input type="date"><input placeholder="Descripción"><input type="number" placeholder="Valor" style="max-width:110px" inputmode="decimal"><button class="btn prim">+</button></form></div>
+      <div class="card"><div class="eti">Gastos</div><div class="tabla-scroll"><table id="tGas"></table></div>
+        <form class="agregar mov" data-tipo="gas"><input type="date"><input placeholder="Descripción"><input type="number" placeholder="Valor" style="max-width:110px" inputmode="decimal"><button class="btn prim">+</button></form></div>
+    </div>
+    <div class="grid g3" style="margin-top:12px" id="totales"></div>
+  </section>
+
+  <!-- LIMPIEZA -->
+  <section class="vista" id="v-lim">
+    <div class="fila espacio"><h2 class="script tit">Check list de Limpieza</h2><span class="eti ac" id="limMes"></span></div>
+    <div class="grid" id="limpieza" style="margin-top:12px"></div>
+  </section>
+</main>
+
+<footer>
+  Agenda de Luisa Figueroa · Los datos se guardan en este dispositivo.<br><br>
+  <a class="btn" href="Agenda-Luisa-Figueroa-2026-2027.pdf" download>Descargar agenda en PDF</a>
+  <button class="btn" id="exportar">Respaldar datos</button>
+  <label class="btn">Restaurar respaldo<input type="file" id="importar" accept="application/json" hidden></label>
+</footer>
+
+<div class="dlg" id="dlg"><div class="card">
+  <div class="fila espacio"><h3 class="script" id="dlgTit" style="font-size:34px;margin:0"></h3><button class="x" id="dlgCerrar" aria-label="Cerrar">×</button></div>
+  <ul class="lista" id="dlgEventos"></ul>
+  <form id="evForm" class="grid" style="margin-top:12px;gap:8px">
+    <input id="evTitulo" placeholder="Evento o tarea (ej. Reunión)" required>
+    <div class="fila"><label class="eti">Hora</label><input type="time" id="evHora"><label class="eti">Duración</label>
+      <select id="evDur"><option value="30">30 min</option><option value="60" selected>1 h</option><option value="120">2 h</option><option value="0">Todo el día</option></select></div>
+    <button class="btn prim">Agregar al calendario</button>
+  </form>
+</div></div>
+
+<script>
+(() => {
+  const MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  const ABR = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
+  const DIAS = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+  const INI = ["D","L","M","M","J","V","S"];
+  const RANGO = [];
+  for (let m = 9; m < 12; m++) RANGO.push([2026, m]);
+  for (let m = 0; m < 12; m++) RANGO.push([2027, m]);
+
+  const HAB_BASE = ["Tomar agua","Skincare","Entrenar","Leer 10 páginas","Dormir 7–8 h","Comer sano","Sin redes sociales"];
+  const RUT_BASE = { "Mañana": ["Tender la cama","Tomar agua","Skincare","Desayunar","Revisar agenda"],
+                     "Tarde": ["Almorzar","Pausa activa","Revisar pendientes","Entrenar"],
+                     "Noche": ["Preparar ropa","Skincare","Leer 10 páginas","Sin pantallas","Dormir 7–8 h"] };
+  const LIM_BASE = { "Diario": ["Tender camas","Lavar platos","Barrer","Limpiar cocina","Sacar basura","Recoger desorden"],
+                     "Semanal": ["Cambiar sábanas","Limpiar baños","Trapear pisos","Lavar ropa","Sacudir muebles","Aspirar"],
+                     "Mensual": ["Limpiar nevera","Limpiar horno","Lavar cortinas","Limpiar ventanas","Organizar closet","Lavar cojines"] };
+
+  // ---------- almacenamiento
+  const KEY = "agenda-luisa-figueroa-v1";
+  let D;
+  try { D = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { D = {}; }
+  D.eventos ??= {}; D.tareas ??= {}; D.habitos ??= [...HAB_BASE]; D.habChecks ??= {};
+  D.rutinas ??= structuredClone(RUT_BASE); D.rutChecks ??= {}; D.meses ??= {}; D.limpieza ??= structuredClone(LIM_BASE); D.limChecks ??= {};
+  const guardar = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch {} };
+
+  // ---------- utilidades
+  const $ = s => document.querySelector(s);
+  const el = (tag, attrs = {}, ...hijos) => {
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+      else if (k === "checked") e.checked = v;
+      else e.setAttribute(k, v);
+    }
+    for (const h of hijos) if (h != null) e.append(h);
+    return e;
+  };
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const deIso = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+  const sumar = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
+  const domingo = d => sumar(d, -d.getDay());
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  const fmt = n => "$" + (Number(n) || 0).toLocaleString("es-CO", { maximumFractionDigits: 2 });
+  const claveMes = () => `${anio}-${String(mes + 1).padStart(2, "0")}`;
+  const datosMes = () => (D.meses[claveMes()] ??= { prio: [], notas: "", balIni: "", ent: [], gas: [] });
+  const semanasMes = (y, m) => { // semanas domingo–sábado que tocan el mes
+    const r = []; let s = domingo(new Date(y, m, 1));
+    while (s <= new Date(y, m + 1, 0)) { r.push(s); s = sumar(s, 7); }
+    return r;
+  };
+
+  // ---------- estado
+  let idx = RANGO.findIndex(([y, m]) => y === hoy.getFullYear() && m === hoy.getMonth());
+  if (idx < 0) idx = hoy < new Date(2026, 9, 1) ? 0 : RANGO.length - 1;
+  let [anio, mes] = RANGO[idx];
+  let semana = domingo(idx === RANGO.findIndex(([y, m]) => y === hoy.getFullYear() && m === hoy.getMonth()) ? hoy : new Date(anio, mes, 1));
+  let vista = "dash";
+
+  const VISTAS = [["dash","Dashboard"],["cal","Calendario"],["sem","Semanas"],["hab","Hábitos"],["rut","Rutinas"],["pre","Presupuesto"],["lim","Limpieza"]];
+  const tabs = $("#tabs");
+  VISTAS.forEach(([k, n]) => tabs.append(el("button", { "data-v": k, onclick: () => ir(k) }, n)));
+  const selMes = $("#mes");
+  RANGO.forEach(([y, m], i) => selMes.append(el("option", { value: i }, `${MESES[m]} ${y}`)));
+  const cambiarMes = i => {
+    idx = Math.max(0, Math.min(RANGO.length - 1, i)); [anio, mes] = RANGO[idx];
+    const s = semanasMes(anio, mes);
+    if (!s.some(x => +x === +semana)) semana = s[0];
+    render();
+  };
+  selMes.onchange = () => cambiarMes(+selMes.value);
+  $("#mesAnt").onclick = () => cambiarMes(idx - 1);
+  $("#mesSig").onclick = () => cambiarMes(idx + 1);
+
+  function ir(v) { vista = v; try { sessionStorage.setItem(KEY + "-vista", v); } catch {} render(); }
+  try { vista = sessionStorage.getItem(KEY + "-vista") || "dash"; } catch {}
+
+  // ---------- listas reutilizables
+  function lista(ul, items, alCambiar) {
+    ul.replaceChildren(...items.map((it, i) => el("li", { class: it.hecho ? "hecho" : "" },
+      el("input", { type: "checkbox", checked: !!it.hecho, onchange: e => { it.hecho = e.target.checked; alCambiar(); } }),
+      el("span", {}, it.texto),
+      el("button", { class: "x", "aria-label": "Eliminar", onclick: () => { items.splice(i, 1); alCambiar(); } }, "×"))));
+  }
+
+  // ---------- Google Calendar
+  function enlaceGCal(fecha, ev) {
+    const p = new URLSearchParams({ action: "TEMPLATE", text: ev.titulo });
+    const f = fecha.replaceAll("-", "");
+    if (ev.hora && +ev.dur) {
+      const [h, mi] = ev.hora.split(":").map(Number);
+      const ini = new Date(deIso(fecha)); ini.setHours(h, mi);
+      const fin = new Date(ini.getTime() + ev.dur * 60000);
+      const t = d => `${iso(d).replaceAll("-", "")}T${String(d.getHours()).padStart(2, "0")}${String(d.getMinutes()).padStart(2, "0")}00`;
+      p.set("dates", `${t(ini)}/${t(fin)}`);
+    } else {
+      p.set("dates", `${f}/${iso(sumar(deIso(fecha), 1)).replaceAll("-", "")}`);
+    }
+    return "https://calendar.google.com/calendar/render?" + p;
+  }
+
+  // ---------- diálogo de día
+  let diaAbierto = null;
+  function abrirDia(fecha) {
+    diaAbierto = fecha;
+    const d = deIso(fecha);
+    $("#dlgTit").textContent = `${DIAS[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]}`;
+    pintarDia();
+    $("#dlg").classList.add("on");
+    $("#evTitulo").focus();
+  }
+  function pintarDia() {
+    const evs = D.eventos[diaAbierto] || [];
+    $("#dlgEventos").replaceChildren(...(evs.length ? evs.map((ev, i) => el("li", {},
+      el("span", {}, (ev.hora ? ev.hora + " · " : "") + ev.titulo),
+      el("a", { class: "gcal", href: enlaceGCal(diaAbierto, ev), target: "_blank", rel: "noopener" }, "Google Calendar"),
+      el("button", { class: "x", "aria-label": "Eliminar", onclick: () => { evs.splice(i, 1); if (!evs.length) delete D.eventos[diaAbierto]; guardar(); pintarDia(); render(); } }, "×")))
+      : [el("li", {}, el("span", { class: "eti" }, "Sin eventos todavía"))]));
+  }
+  $("#dlgCerrar").onclick = () => $("#dlg").classList.remove("on");
+  $("#dlg").onclick = e => { if (e.target.id === "dlg") $("#dlg").classList.remove("on"); };
+  $("#evForm").onsubmit = e => {
+    e.preventDefault();
+    const titulo = $("#evTitulo").value.trim(); if (!titulo) return;
+    (D.eventos[diaAbierto] ??= []).push({ titulo, hora: $("#evHora").value, dur: $("#evDur").value });
+    D.eventos[diaAbierto].sort((a, b) => (a.hora || "").localeCompare(b.hora || ""));
+    $("#evTitulo").value = ""; $("#evHora").value = "";
+    guardar(); pintarDia(); render();
+  };
+
+  // ---------- vistas
+  function vCal() {
+    $("#calTit").textContent = `${MESES[mes]} ${anio}`;
+    const c = $("#cal"); c.replaceChildren(...DIAS.map(d => el("div", { class: "cab" }, d.toUpperCase())));
+    const primero = new Date(anio, mes, 1).getDay(), n = new Date(anio, mes + 1, 0).getDate();
+    for (let i = 0; i < primero; i++) c.append(el("div", { class: "dia vacio" }));
+    for (let d = 1; d <= n; d++) {
+      const f = iso(new Date(anio, mes, d));
+      const caja = el("div", { class: "dia" + (f === iso(hoy) ? " hoy" : ""), onclick: () => abrirDia(f) }, el("b", {}, d));
+      (D.eventos[f] || []).forEach(ev => caja.append(el("span", { class: "ev" }, (ev.hora ? ev.hora + " " : "") + ev.titulo)));
+      c.append(caja);
+    }
+    const dm = datosMes();
+    lista($("#prio"), dm.prio, () => { guardar(); vCal(); });
+    $("#notasMes").value = dm.notas;
+    $("#notasMes").oninput = e => { dm.notas = e.target.value; guardar(); };
+  }
+
+  function vSem() {
+    const sems = semanasMes(anio, mes);
+    let n = sems.findIndex(s => +s === +semana);
+    if (n < 0) { semana = sems[0]; n = 0; }
+    const fin = sumar(semana, 6);
+    $("#semTit").textContent = `Semana ${n + 1}`;
+    $("#semRango").textContent = `${semana.getDate()} ${ABR[semana.getMonth()]} – ${fin.getDate()} ${ABR[fin.getMonth()]} ${fin.getFullYear()}`;
+    $("#semBtns").replaceChildren(...sems.map((s, i) => el("button", { class: +s === +semana ? "on" : "", onclick: () => { semana = s; render(); } }, i + 1)));
+    $("#dias7").replaceChildren(...Array.from({ length: 7 }, (_, i) => {
+      const d = sumar(semana, i), f = iso(d);
+      const tareas = (D.tareas[f] ??= []);
+      const ul = el("ul", { class: "lista" });
+      lista(ul, tareas, () => { guardar(); vSem(); });
+      const evs = (D.eventos[f] || []).map(ev => el("span", { class: "ev" }, (ev.hora ? ev.hora + " " : "") + ev.titulo));
+      const form = el("form", { class: "agregar", onsubmit: e => {
+        e.preventDefault(); const v = e.target.querySelector("input").value.trim(); if (!v) return;
+        tareas.push({ texto: v, hecho: false }); guardar(); vSem(); } },
+        el("input", { placeholder: "Nueva tarea" }), el("button", { class: "btn prim" }, "+"));
+      return el("div", { class: "card", style: f === iso(hoy) ? "border-color:var(--acento)" : "" },
+        el("div", { class: "fila espacio" }, el("h3", { class: "script" }, DIAS[i]),
+          el("button", { class: "btn mini", onclick: () => abrirDia(f), title: "Agregar evento" }, `${d.getDate()} ${ABR[d.getMonth()]} +`)),
+        ...evs, ul, form);
+    }));
+  }
+
+  const habOk = (h, f) => !!D.habChecks[f]?.[h];
+  function pctSemana(ini) {
+    let tot = 0, ok = 0;
+    for (let i = 0; i < 7; i++) { const f = iso(sumar(ini, i)); D.habitos.forEach(h => { tot++; if (habOk(h, f)) ok++; }); }
+    return tot ? Math.round(ok / tot * 100) : 0;
+  }
+  function vHab() {
+    $("#habMes").textContent = `${MESES[mes]} ${anio}`;
+    const n = new Date(anio, mes + 1, 0).getDate();
+    const cab1 = el("tr", {}, el("th", { class: "nom" }, "HÁBITO")), cab2 = el("tr", {}, el("th", { class: "nom" }));
+    for (let d = 1; d <= n; d++) { cab1.append(el("th", {}, INI[new Date(anio, mes, d).getDay()])); cab2.append(el("th", {}, d)); }
+    cab1.append(el("th", {}, "%")); cab2.append(el("th"));
+    const filas = D.habitos.map((h, hi) => {
+      const tr = el("tr", {}, el("td", { class: "nom" },
+        el("button", { class: "x", "aria-label": "Eliminar hábito", onclick: () => { if (confirm(`¿Eliminar "${h}"?`)) { D.habitos.splice(hi, 1); guardar(); render(); } } }, "×"), h));
+      let ok = 0;
+      for (let d = 1; d <= n; d++) {
+        const f = iso(new Date(anio, mes, d)); if (habOk(h, f)) ok++;
+        tr.append(el("td", {}, el("input", { type: "checkbox", "aria-label": `${h} día ${d}`, checked: habOk(h, f), onchange: e => {
+          (D.habChecks[f] ??= {})[h] = e.target.checked; guardar(); vHab(); } })));
+      }
+      tr.append(el("td", { class: "eti ac" }, Math.round(ok / n * 100) + "%"));
+      return tr;
+    });
+    $("#habTabla").replaceChildren(cab1, cab2, ...filas);
+    $("#habSemanas").replaceChildren(...semanasMes(anio, mes).map((s, i) => {
+      const p = pctSemana(s);
+      return el("div", { class: "card" }, el("div", { class: "script", style: "font-size:28px" }, `Semana ${i + 1}`),
+        el("div", { class: "eti" }, `${s.getDate()} ${ABR[s.getMonth()]}`), el("div", { class: "big" }, p + "%"),
+        el("div", { class: "barra" }, el("i", { style: `width:${p}%` })));
+    }));
+  }
+  $("#habAdd").onsubmit = e => {
+    e.preventDefault(); const i = e.target.querySelector("input"); const v = i.value.trim();
+    if (v && !D.habitos.includes(v)) { D.habitos.push(v); guardar(); render(); } i.value = "";
+  };
+
+  function vRut() {
+    const f = iso(hoy);
+    $("#rutHoy").textContent = `Hoy · ${DIAS[hoy.getDay()]} ${hoy.getDate()} ${ABR[hoy.getMonth()]}`;
+    const checks = (D.rutChecks[f] ??= {});
+    $("#rutinas").replaceChildren(...Object.entries(D.rutinas).map(([bloque, items]) => {
+      const ul = el("ul", { class: "lista" }, ...items.map((it, i) => el("li", { class: checks[bloque + "|" + it] ? "hecho" : "" },
+        el("input", { type: "checkbox", checked: !!checks[bloque + "|" + it], onchange: e => { checks[bloque + "|" + it] = e.target.checked; guardar(); vRut(); } }),
+        el("span", {}, it),
+        el("button", { class: "x", "aria-label": "Eliminar", onclick: () => { items.splice(i, 1); guardar(); vRut(); } }, "×"))));
+      const form = el("form", { class: "agregar", onsubmit: e => {
+        e.preventDefault(); const v = e.target.querySelector("input").value.trim(); if (v) { items.push(v); guardar(); vRut(); } } },
+        el("input", { placeholder: "Agregar paso" }), el("button", { class: "btn prim" }, "+"));
+      const ok = items.filter(it => checks[bloque + "|" + it]).length;
+      return el("div", { class: "card" }, el("div", { class: "fila espacio" }, el("h3", { class: "script", style: "font-size:38px;margin:0" }, bloque),
+        el("span", { class: "eti ac" }, `${ok}/${items.length}`)), ul, form);
+    }));
+  }
+
+  function totalesMes(dm) {
+    const ing = dm.ent.reduce((a, x) => a + (+x.valor || 0), 0), gas = dm.gas.reduce((a, x) => a + (+x.valor || 0), 0);
+    const ini = +dm.balIni || 0;
+    return { ini, ing, gas, fin: ini + ing - gas, dif: ing - gas };
+  }
+  function vPre() {
+    $("#preMes").textContent = `${MESES[mes]} ${anio}`;
+    const dm = datosMes();
+    $("#balIni").value = dm.balIni;
+    $("#balIni").oninput = e => { dm.balIni = e.target.value; guardar(); pintarTotales(); };
+    for (const [tipo, tabla] of [["ent", "#tEnt"], ["gas", "#tGas"]]) {
+      const cab = el("tr", {}, ...(tipo === "gas" ? [el("th", {}, "✓")] : []), el("th", {}, "FECHA"), el("th", { class: "nom" }, "DESCRIPCIÓN"), el("th", {}, "VALOR"), el("th"));
+      const filas = dm[tipo].map((x, i) => el("tr", {},
+        ...(tipo === "gas" ? [el("td", {}, el("input", { type: "checkbox", checked: !!x.pagado, onchange: e => { x.pagado = e.target.checked; guardar(); } }))] : []),
+        el("td", {}, x.fecha ? x.fecha.slice(8) + "/" + x.fecha.slice(5, 7) : ""), el("td", { class: "nom" }, x.desc),
+        el("td", { class: "money" }, fmt(x.valor)),
+        el("td", {}, el("button", { class: "x", "aria-label": "Eliminar", onclick: () => { dm[tipo].splice(i, 1); guardar(); vPre(); } }, "×"))));
+      $(tabla).replaceChildren(cab, ...filas);
+    }
+    pintarTotales();
+  }
+  function pintarTotales() {
+    const t = totalesMes(datosMes());
+    $("#totales").replaceChildren(...[["Total ingresos", t.ing], ["Total gastos", t.gas], ["Balance final", t.fin], ["Diferencia", t.dif]].map(([n, v]) =>
+      el("div", { class: "card" }, el("div", { class: "eti" }, n), el("div", { class: "big money", style: v < 0 ? "color:var(--acento)" : "" }, fmt(v)))));
+  }
+  document.querySelectorAll("form.mov").forEach(f => f.onsubmit = e => {
+    e.preventDefault();
+    const [fecha, desc, valor] = f.querySelectorAll("input");
+    if (!desc.value.trim() || valor.value === "") return;
+    datosMes()[f.dataset.tipo].push({ fecha: fecha.value, desc: desc.value.trim(), valor: +valor.value });
+    desc.value = ""; valor.value = ""; guardar(); vPre();
+  });
+  document.querySelector('form[data-lista="prio"]').onsubmit = e => {
+    e.preventDefault(); const i = e.target.querySelector("input"); const v = i.value.trim();
+    if (v) { datosMes().prio.push({ texto: v, hecho: false }); guardar(); vCal(); } i.value = "";
+  };
+
+  function vLim() {
+    $("#limMes").textContent = `${MESES[mes]} ${anio}`;
+    const ck = (D.limChecks[claveMes()] ??= {});
+    const cols = { "Diario": INI, "Semanal": semanasMes(anio, mes).map((_, i) => "S" + (i + 1)), "Mensual": ["OK"] };
+    $("#limpieza").replaceChildren(...Object.entries(D.limpieza).map(([sec, items]) => {
+      const cab = el("tr", {}, el("th", { class: "nom" }), ...cols[sec].map(c => el("th", {}, c)), el("th"));
+      const filas = items.map((it, i) => el("tr", {}, el("td", { class: "nom" }, it),
+        ...cols[sec].map((_, k) => el("td", {}, el("input", { type: "checkbox", "aria-label": `${it} ${cols[sec][k]}`, checked: !!ck[`${sec}|${it}|${k}`],
+          onchange: e => { ck[`${sec}|${it}|${k}`] = e.target.checked; guardar(); } }))),
+        el("td", {}, el("button", { class: "x", "aria-label": "Eliminar", onclick: () => { items.splice(i, 1); guardar(); vLim(); } }, "×"))));
+      const form = el("form", { class: "agregar", onsubmit: e => {
+        e.preventDefault(); const v = e.target.querySelector("input").value.trim(); if (v) { items.push(v); guardar(); vLim(); } } },
+        el("input", { placeholder: "Agregar tarea de limpieza" }), el("button", { class: "btn prim" }, "+"));
+      return el("div", { class: "card" }, el("h3", { class: "script", style: "font-size:38px;margin:0" }, sec),
+        el("div", { class: "tabla-scroll" }, el("table", {}, cab, ...filas)), form);
+    }));
+  }
+
+  function vDash() {
+    $("#dashFecha").textContent = `${DIAS[hoy.getDay()]} ${hoy.getDate()} de ${MESES[hoy.getMonth()]} ${hoy.getFullYear()}`;
+    const sem = domingo(hoy), p = pctSemana(sem);
+    $("#dashHab").textContent = p + "%"; $("#dashHabBar").style.width = p + "%";
+    const f = iso(hoy), ck = D.rutChecks[f] || {};
+    const todos = Object.entries(D.rutinas).flatMap(([b, its]) => its.map(it => b + "|" + it));
+    const pr = todos.length ? Math.round(todos.filter(k => ck[k]).length / todos.length * 100) : 0;
+    $("#dashRut").textContent = pr + "%"; $("#dashRutBar").style.width = pr + "%";
+    const t = totalesMes(datosMes());
+    $("#dashBal").textContent = fmt(t.fin);
+    $("#dashBalSub").textContent = `${MESES[mes]} · ingresos ${fmt(t.ing)} · gastos ${fmt(t.gas)}`;
+    const cab = el("tr", {}, el("th", { class: "nom" }, "HÁBITO"), ...INI.map(l => el("th", {}, l)));
+    const filas = D.habitos.map(h => el("tr", {}, el("td", { class: "nom" }, h), ...Array.from({ length: 7 }, (_, i) => {
+      const fd = iso(sumar(sem, i));
+      return el("td", {}, el("input", { type: "checkbox", "aria-label": `${h} ${DIAS[i]}`, checked: habOk(h, fd), onchange: e => { (D.habChecks[fd] ??= {})[h] = e.target.checked; guardar(); vDash(); } }));
+    })));
+    $("#dashTabla").replaceChildren(cab, ...filas);
+    const prox = Object.keys(D.eventos).filter(k => k >= f).sort().slice(0, 8)
+      .flatMap(k => D.eventos[k].map(ev => el("li", {}, el("span", {}, `${deIso(k).getDate()} ${ABR[deIso(k).getMonth()]} · ${ev.hora ? ev.hora + " · " : ""}${ev.titulo}`),
+        el("a", { class: "gcal", href: enlaceGCal(k, ev), target: "_blank", rel: "noopener" }, "Google Calendar"))));
+    $("#dashEventos").replaceChildren(...(prox.length ? prox : [el("li", {}, el("span", { class: "eti" }, "Agrega eventos desde el Calendario"))]));
+  }
+
+  const RENDER = { dash: vDash, cal: vCal, sem: vSem, hab: vHab, rut: vRut, pre: vPre, lim: vLim };
+  function render() {
+    selMes.value = idx;
+    document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.v === vista));
+    document.querySelectorAll(".vista").forEach(s => s.classList.toggle("on", s.id === "v-" + vista));
+    RENDER[vista]();
+  }
+
+  // ---------- respaldo
+  $("#exportar").onclick = () => {
+    const a = el("a", { href: URL.createObjectURL(new Blob([JSON.stringify(D, null, 2)], { type: "application/json" })), download: `agenda-luisa-figueroa-${iso(hoy)}.json` });
+    a.click(); URL.revokeObjectURL(a.href);
+  };
+  $("#importar").onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try { const nuevo = JSON.parse(await f.text()); if (confirm("¿Reemplazar los datos actuales con el respaldo?")) { localStorage.setItem(KEY, JSON.stringify(nuevo)); location.reload(); } }
+    catch { alert("El archivo no es un respaldo válido."); }
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>
